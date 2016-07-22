@@ -14,7 +14,7 @@
  *                                                        *
  * hprose yii http service class for php 5.3+             *
  *                                                        *
- * LastModified: Jul 18, 2016                             *
+ * LastModified: Jul 22, 2016                             *
  * Author: Ma Bingyao <andot@hprose.com>                  *
  *                                                        *
 \**********************************************************/
@@ -23,13 +23,13 @@ namespace Hprose\Yii;
 
 class Service extends \Hprose\Http\Service {
     const ORIGIN = 'Origin';
-    protected function header($name, $value, $context) {
+    public function header($name, $value, $context) {
         $context->response->headers->set($name, $value);
     }
-    protected function getAttribute($name, $context) {
+    public function getAttribute($name, $context) {
         return $context->request->headers->get($name);
     }
-    protected function hasAttribute($name, $context) {
+    public function hasAttribute($name, $context) {
         return $context->request->headers->has($name);
     }
     protected function readRequest($context) {
@@ -42,14 +42,14 @@ class Service extends \Hprose\Http\Service {
         $context->session = $request->session;
         return $context;
     }
-    protected function writeResponse($data, $context) {
+    public function writeResponse($data, $context) {
         $context->response->format = \yii\web\Response::FORMAT_RAW;
         $context->response->data = $data;
     }
-    protected function isGet($context) {
+    public function isGet($context) {
         return $context->request->isGet;
     }
-    protected function isPost($context) {
+    public function isPost($context) {
         return $context->request->isPost;
     }
 }
