@@ -14,7 +14,7 @@
  *                                                        *
  * hprose yii http service class for php 5.3+             *
  *                                                        *
- * LastModified: Jul 22, 2016                             *
+ * LastModified: Jul 26, 2016                             *
  * Author: Ma Bingyao <andot@hprose.com>                  *
  *                                                        *
 \**********************************************************/
@@ -34,11 +34,6 @@ class Service extends \Hprose\Http\Service {
     }
     protected function readRequest($context) {
         return $context->request->rawBody;
-    }
-    protected function createContext($request, $response) {
-        $context = parent::createContext($request, $response);
-        $context->session = $request->session;
-        return $context;
     }
     public function writeResponse($data, $context) {
         $context->response->format = \yii\web\Response::FORMAT_RAW;
