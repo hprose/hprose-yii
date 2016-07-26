@@ -1,4 +1,4 @@
-# Hprose for Yii
+# Hprose for Yii 2
 
 [![Build Status](https://travis-ci.org/hprose/hprose-yii.svg?branch=master)](https://travis-ci.org/hprose/hprose-yii)
 ![Supported PHP versions: 5.3 .. 7.1](https://img.shields.io/badge/php-5.3~7.1-blue.svg)
@@ -34,7 +34,7 @@ It is a modern, lightweight, cross-language, cross-platform, object-oriented, hi
 
 Through *Hprose*, You can conveniently and efficiently intercommunicate between those programming languages.
 
-This project is the implementation of Hprose for Yii.
+This project is the implementation of Hprose for Yii 2.
 
 ## Installation
 
