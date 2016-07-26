@@ -9,7 +9,6 @@ php:
 sudo: required
 
 before_script:
-  - bower install jquery
   - composer install
   - cd tests
 
