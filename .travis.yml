@@ -9,6 +9,7 @@ php:
 sudo: required
 
 before_script:
+  - composer global require "fxp/composer-asset-plugin:~1.1"
   - composer install
   - cd tests
 

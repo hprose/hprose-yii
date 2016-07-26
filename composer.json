@@ -46,7 +46,6 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "fxp/composer-asset-plugin": ">=1.0.0",
         "hprose/hprose": "^2.0",
         "yiisoft/yii2": "^2.0"
     },
