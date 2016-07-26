@@ -37,7 +37,7 @@ class Service extends \Hprose\Http\Service {
     }
     protected function createContext($request, $response) {
         $context = parent::createContext($request, $response);
-        $context->session = $request->session;
+        $context->session = \Yii::$app->session;
         return $context;
     }
     public function writeResponse($data, $context) {
