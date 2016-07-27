@@ -36,6 +36,8 @@ Through *Hprose*, You can conveniently and efficiently intercommunicate between 
 
 This project is the implementation of Hprose for Yii 2.
 
+More Documents for Hprose 2.0: https://github.com/hprose/hprose-php/wiki
+
 ## Installation
 
 ### Download Source Code
@@ -45,7 +47,7 @@ This project is the implementation of Hprose for Yii 2.
 ```javascript
 {
     "require": {
-        "hprose/hprose-yii": "dev-master"
+        "hprose/hprose-yii": "^2.0"
     }
 }
 ```
