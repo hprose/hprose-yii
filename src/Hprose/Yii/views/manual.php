@@ -45,7 +45,15 @@ ManualAsset::register($this);
                     <div class="refsect1 description" id="refsect1-function.array-change-key-case-description">
                         <h3 class="title"><?= $name ?></h3>
                         <p class="para rdfs-comment">
-                            <span><?= str_replace("\n", "<br>", $reflect->getDocComment()) ?></span>
+                            <span>
+                                <?php
+                                $doc = $reflect->getDocComment();
+                                $doc = str_replace("\n", "<br>", $doc);
+                                $doc = str_replace(['*', '/'], "", $doc);
+
+                                echo $doc;
+                                ?>
+                            </span>
                         </p>
                         <div class="methodsynopsis dc-description">
                             <span class="type"><?= $reflect->getReturnType() ?></span>
