@@ -56,7 +56,7 @@ ManualAsset::register($this);
                             </span>
                         </p>
                         <div class="methodsynopsis dc-description">
-                            <span class="type"></span>
+                            <span class="type"><?= method_exists($reflect, 'getReturnType') ? $reflect->getReturnType() : '' ?></span>
                             <span class="methodname"><strong><?= $name ?></strong></span>
                             <?php
                             $parameters = $reflect->getParameters();
@@ -66,9 +66,10 @@ ManualAsset::register($this);
                                 if ($parameter->isDefaultValueAvailable()) {
                                     $default = '= ' . VarDumper::export($parameter->getDefaultValue());
                                 }
+                                $type = method_exists($parameter, 'getType') ? $parameter->getType() : '';
                                 $data[] = <<<HTML
 <span class="methodparam">
-    <span class="type"></span> 
+    <span class="type">{$type}</span> 
     <code class="parameter">\${$parameter->getName()} {$default}</code>
 </span>
 HTML;
