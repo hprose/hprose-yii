@@ -56,7 +56,7 @@ ManualAsset::register($this);
                             </span>
                         </p>
                         <div class="methodsynopsis dc-description">
-                            <span class="type"><?= $reflect->getReturnType() ?></span>
+                            <span class="type"></span>
                             <span class="methodname"><strong><?= $name ?></strong></span>
                             <?php
                             $parameters = $reflect->getParameters();
@@ -68,7 +68,7 @@ ManualAsset::register($this);
                                 }
                                 $data[] = <<<HTML
 <span class="methodparam">
-    <span class="type">{$parameter->getType()}</span> 
+    <span class="type"></span> 
     <code class="parameter">\${$parameter->getName()} {$default}</code>
 </span>
 HTML;
