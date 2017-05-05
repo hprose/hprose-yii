@@ -1,0 +1,87 @@
+<?php
+
+namespace Hprose\Yii;
+
+use Hprose\Http\Client;
+use yii\base\Component;
+use yii\base\ErrorException;
+use yii\httpclient\Client as HttpClient;
+
+/**
+ * 支持服务中心的rpc客户端
+ * User: 李鹏飞 <523260513@qq.com>
+ * Date: 2016/7/14
+ * Time: 18:26
+ */
+class RpcClient extends Component
+{
+    /**
+     * @var array
+     */
+    public $discoverUrls;
+
+    /**
+     * @var array
+     */
+    private $_config;
+    /**
+     * @var array
+     */
+    private $_service;
+
+    /**
+     * 获取服务url配置
+     * @param $name
+     * @return array
+     * @throws ErrorException
+     */
+    protected function getServiceUrls($name)
+    {
+        if (!$this->_config) {
+            $httpClient = new HttpClient();
+            $requests = [];
+            foreach ($this->discoverUrls as $discoverUrl) {
+                $requests[] = $httpClient->get($discoverUrl);
+            }
+            $responses = $httpClient->batchSend($requests);
+
+            $list = [];
+            foreach ($responses as $response) {
+                foreach ($response->data as $name => $url) {
+                    $list[$name][] = $url;
+                }
+            }
+
+            $this->_config = $list;
+        }
+
+        if (isset($this->_config[$name]) && $this->_config[$name]) {
+            return $this->_config[$name];
+        } else {
+            throw new ErrorException('不存在该服务，请检查服务中心');
+        }
+    }
+
+    /**
+     * 查找服务
+     * @param $service
+     * @param $async
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getService($service, $async)
+    {
+        if ($async) {
+            $group = 'async';
+        } else {
+            $group = 'sync';
+        }
+
+        if (!isset($this->_service[$group][$service])) {
+            $obj = new Client($this->getServiceUrls($service), $async);
+            $this->_service[$group][$service] = $obj;
+        }
+
+        return $this->_service[$group][$service];
+    }
+}

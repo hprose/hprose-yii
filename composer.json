@@ -46,8 +46,9 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "hprose/hprose": "^2.0",
-        "yiisoft/yii2": "~2.0.11"
+        "hprose/hprose": "~2.0.29",
+        "yiisoft/yii2": "~2.0.11",
+        "yiisoft/yii2-httpclient": "~2.0"
     },
     "suggest": {
         "ext-hprose": "Faster serialize and unserialize hprose extension."
