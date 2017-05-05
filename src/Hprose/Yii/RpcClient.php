@@ -5,6 +5,7 @@ namespace Hprose\Yii;
 use Hprose\Http\Client;
 use yii\base\Component;
 use yii\base\ErrorException;
+use yii\base\Event;
 use yii\httpclient\Client as HttpClient;
 
 /**
@@ -28,6 +29,8 @@ class RpcClient extends Component
      * @var array
      */
     private $_service;
+
+    const EVENT_AFTER_INIT_CLIENT = 'after_init_client';
 
     /**
      * 获取服务url配置
@@ -77,11 +80,14 @@ class RpcClient extends Component
             $group = 'sync';
         }
 
-        if (!isset($this->_service[$group][$service])) {
+        if (!isset($this->_service[$service][$group])) {
             $obj = new Client($this->getServiceUrls($service), $async);
-            $this->_service[$group][$service] = $obj;
+            $this->trigger(static::EVENT_AFTER_INIT_CLIENT, new Event([
+                'data' => &$obj
+            ]));
+            $this->_service[$service][$group] = $obj;
         }
 
-        return $this->_service[$group][$service];
+        return $this->_service[$service][$group];
     }
 }
