@@ -7,6 +7,7 @@ use yii\base\Component;
 use yii\base\ErrorException;
 use yii\base\Event;
 use yii\httpclient\Client as HttpClient;
+use yii\httpclient\CurlTransport;
 
 /**
  * 支持服务中心的rpc客户端
@@ -42,6 +43,7 @@ class RpcClient extends Component
     {
         if (!$this->_config) {
             $httpClient = new HttpClient();
+            $httpClient->transport = CurlTransport::class;
             $requests = [];
             foreach ($this->discoverUrls as $discoverUrl) {
                 $requests[] = $httpClient->get($discoverUrl);
@@ -69,10 +71,10 @@ class RpcClient extends Component
      * 查找服务
      * @param $service
      * @param $async
-     * @return mixed
+     * @return \Hprose\Client
      * @throws \Exception
      */
-    public function getService($service, $async)
+    public function getService($service, $async = true)
     {
         if ($async) {
             $group = 'async';

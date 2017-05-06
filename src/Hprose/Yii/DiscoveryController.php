@@ -12,8 +12,8 @@ use Yii;
 use yii\caching\TagDependency;
 use yii\helpers\Inflector;
 use yii\helpers\Url;
+use yii\rest\Controller;
 use yii\web\Application;
-use yii\web\Controller;
 use yii\web\Response;
 
 /**
