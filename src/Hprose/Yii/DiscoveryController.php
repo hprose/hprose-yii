@@ -9,7 +9,8 @@
 namespace Hprose\Yii;
 
 use Yii;
-use yii\caching\TagDependency;
+use yii\caching\Dependency;
+use yii\caching\FileDependency;
 use yii\helpers\Inflector;
 use yii\helpers\Url;
 use yii\rest\Controller;
@@ -31,6 +32,24 @@ class DiscoveryController extends Controller
     public $cacheKey = 'rpc-services';
 
     /**
+     * @var string
+     */
+    public $cacheFilePath = '@runtime/hprose_cache';
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        $dependFile = Yii::getAlias($this->cacheFilePath);
+        if (!file_exists($dependFile)) {
+            touch($dependFile);
+        }
+    }
+
+    /**
      * @return string
      */
     public function actionIndex()
@@ -40,6 +59,7 @@ class DiscoveryController extends Controller
         $dependency = $this->createDependency();
 
         return Yii::$app->cache->getOrSet($this->cacheKey, function () {
+            Yii::trace('Dynamic Find');
             $services = [];
             $commands = $this->getCommandDescriptions();
             foreach ($commands as $controller => $actions) {
@@ -151,29 +171,12 @@ class DiscoveryController extends Controller
     }
 
     /**
-     * 刷新缓存
-     */
-    public function actionFlush()
-    {
-        $this->invalidateDependency();
-    }
-
-    /**
      * 生成缓存依赖
-     * @return TagDependency
+     * @return Dependency
      */
     protected function createDependency()
     {
-        return new TagDependency(['tags' => $this->cacheKey]);
-    }
-
-    /**
-     * @return bool
-     */
-    protected function invalidateDependency()
-    {
-        TagDependency::invalidate(Yii::$app->cache, $this->cacheKey);
-
-        return true;
+        $dependFile = Yii::getAlias($this->cacheFilePath);
+        return new FileDependency(['fileName' => $dependFile]);
     }
 }
