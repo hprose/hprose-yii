@@ -85,7 +85,7 @@ class RpcClient extends Component
         if (!isset($this->_service[$service][$group])) {
             $obj = new Client($this->getServiceUrls($service), $async);
             $this->trigger(static::EVENT_AFTER_INIT_CLIENT, new Event([
-                'data' => &$obj
+                'sender' => &$obj
             ]));
             $this->_service[$service][$group] = $obj;
         }
