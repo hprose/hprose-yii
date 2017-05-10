@@ -35,11 +35,11 @@ class RpcClient extends Component
 
     /**
      * 获取服务url配置
-     * @param $name
+     * @param $service
      * @return array
      * @throws ErrorException
      */
-    protected function getServiceUrls($name)
+    protected function getServiceUrls($service)
     {
         if (!$this->_config) {
             $httpClient = new HttpClient();
@@ -60,8 +60,8 @@ class RpcClient extends Component
             $this->_config = $list;
         }
 
-        if (isset($this->_config[$name]) && $this->_config[$name]) {
-            return $this->_config[$name];
+        if (isset($this->_config[$service]) && $this->_config[$service]) {
+            return $this->_config[$service];
         } else {
             throw new ErrorException('不存在该服务，请检查服务中心');
         }

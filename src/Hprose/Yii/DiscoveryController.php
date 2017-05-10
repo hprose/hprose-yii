@@ -13,8 +13,8 @@ use yii\caching\Dependency;
 use yii\caching\FileDependency;
 use yii\helpers\Inflector;
 use yii\helpers\Url;
-use yii\rest\Controller;
 use yii\web\Application;
+use yii\web\Controller;
 use yii\web\Response;
 
 /**
@@ -26,6 +26,11 @@ use yii\web\Response;
  */
 class DiscoveryController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public $enableCsrfValidation = false;
+
     /**
      * @var string
      */
