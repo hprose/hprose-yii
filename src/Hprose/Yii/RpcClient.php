@@ -29,7 +29,7 @@ class RpcClient extends Component
     /**
      * @var array
      */
-    private $_service;
+    private $_service = [];
 
     const EVENT_AFTER_INIT_CLIENT = 'after_init_client';
 
