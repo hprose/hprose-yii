@@ -71,7 +71,7 @@ class RpcClient extends Component
      * 查找服务
      * @param $service
      * @param $async
-     * @return \Hprose\Client
+     * @return Client
      * @throws \Exception
      */
     public function getService($service, $async = true)
@@ -91,5 +91,21 @@ class RpcClient extends Component
         }
 
         return $this->_service[$service][$group];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function __destruct()
+    {
+        $group = 'async';
+
+        foreach ($this->_service as $service){
+            if(isset($service[$group])){
+                /* @var $client Client */
+                $client = $service[$group];
+                $client->loop();
+            }
+        }
     }
 }
