@@ -63,13 +63,13 @@ class DiscoveryController extends Controller
 
         $dependency = $this->createDependency();
 
-        return Yii::$app->cache->getOrSet($this->cacheKey, function () {
+        return Yii::$app->cache->getOrSet($this->module->getUniqueId() . $this->cacheKey, function () {
             Yii::trace('Dynamic Find');
             $services = [];
             $commands = $this->getCommandDescriptions();
             foreach ($commands as $controller => $actions) {
                 foreach ($actions as $action) {
-                    $services[$action] = Url::to(["{$controller}/{$action}"], true);
+                    $services[$action] = Url::to(["/{$controller}/{$action}"], true);
                 }
             }
 
@@ -125,7 +125,7 @@ class DiscoveryController extends Controller
      */
     protected function getCommands()
     {
-        $commands = $this->getModuleCommands(Yii::$app);
+        $commands = $this->getModuleCommands($this->module);
         sort($commands);
         return array_unique($commands);
     }
