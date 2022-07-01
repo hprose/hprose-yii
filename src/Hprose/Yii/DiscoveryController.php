@@ -63,7 +63,7 @@ class DiscoveryController extends Controller
 
         $dependency = $this->createDependency();
 
-        return Yii::$app->cache->getOrSet($this->cacheKey, function () {
+        return Yii::$app->cache->getOrSet($this->module->getUniqueId() . $this->cacheKey, function () {
             Yii::trace('Dynamic Find');
             $services = [];
             $commands = $this->getCommandDescriptions();
@@ -83,10 +83,13 @@ class DiscoveryController extends Controller
      */
     protected function getCommandDescriptions()
     {
+        $module = $this->module;
+        $prefix = $module instanceof Application ? '' : $module->getUniqueId() . '/';
+
         $commands = [];
         foreach ($this->getCommands() as $command) {
             $actions = [];
-            $result = Yii::$app->createController($command);
+            $result = Yii::$app->createController($prefix . $command);
             if ($result !== false && $result[0] instanceof \Hprose\Yii\Controller) {
                 list($controller) = $result;
                 /** @var Controller $controller */
@@ -125,7 +128,7 @@ class DiscoveryController extends Controller
      */
     protected function getCommands()
     {
-        $commands = $this->getModuleCommands(Yii::$app);
+        $commands = $this->getModuleCommands($this->module);
         sort($commands);
         return array_unique($commands);
     }
@@ -137,11 +140,11 @@ class DiscoveryController extends Controller
      */
     protected function getModuleCommands($module)
     {
-        $prefix = $module instanceof Application ? '' : $module->getUniqueId() . '/';
+
 
         $commands = [];
         foreach (array_keys($module->controllerMap) as $id) {
-            $commands[] = $prefix . $id;
+            $commands[] =  $id;
         }
 
         $controllerPath = $module->getControllerPath();
@@ -151,7 +154,7 @@ class DiscoveryController extends Controller
                 if (!empty($file) && substr_compare($file, 'Controller.php', -14, 14) === 0) {
                     $controllerClass = $module->controllerNamespace . '\\' . substr(basename($file), 0, -4);
                     if ($this->validateControllerClass($controllerClass)) {
-                        $commands[] = $prefix . Inflector::camel2id(substr(basename($file), 0, -14));
+                        $commands[] =  Inflector::camel2id(substr(basename($file), 0, -14));
                     }
                 }
             }
